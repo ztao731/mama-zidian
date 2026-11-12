@@ -50,7 +50,7 @@ body{{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#fef9f0;
 
 <!-- 首页 -->
 <div class="home" id="homePage">
-  <div class="icon">🏔️</div>
+  <div class="icon">字</div>
   <h1>字源识字</h1>
   <div class="sub">学汉字，懂故事<br>不靠死记硬背</div>
   <button class="btn btn-start" onclick="startLearn()">开始学习</button>
@@ -78,11 +78,11 @@ body{{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#fef9f0;
 
 <!-- 完成页 -->
 <div class="done" id="donePage">
-  <div class="icon">🎉</div>
+  <div class="icon">✓</div>
   <h2>第一关完成！</h2>
   <p>你已经学会了九个象形字</p>
   <div class="grid" id="doneGrid"></div>
-  <button class="btn" onclick="startReview()">🔄 复习一遍</button>
+  <button class="btn" onclick="startReview()">复习一遍</button>
 </div>
 
 <div class="playing-indicator" id="playingIndicator">正在讲解中...</div>
@@ -109,11 +109,13 @@ function getAudioUrl(name) {{
 let currentAudio = null;
 let audioQueue = [];
 let isPlaying = false;
+let pendingTimer = null;
 
 function stopAudio() {{
     if (currentAudio) {{ currentAudio.pause(); currentAudio = null; }}
     audioQueue = [];
     isPlaying = false;
+    if (pendingTimer) {{ clearTimeout(pendingTimer); pendingTimer = null; }}
     document.getElementById('playingIndicator').style.display = 'none';
 }}
 
@@ -167,7 +169,7 @@ async function startLearn() {{
     stopAudio();
     curIdx = 0;
     showPage('learnPage');
-    document.getElementById('btnNext').textContent = '➡️ 下一个字';
+    document.getElementById('btnNext').textContent = '下一个字';
     await playAudio('welcome.mp3');
     await showChar(0);
 }}
@@ -192,15 +194,16 @@ async function showChar(idx) {{
     document.getElementById('sentenceRow').textContent = '例句：' + ch.sentence;
 
     if (idx === chars.length - 1) {{
-        document.getElementById('btnNext').textContent = '🎉 完成学习';
+        document.getElementById('btnNext').textContent = '完成学习';
     }} else {{
-        document.getElementById('btnNext').textContent = '➡️ 下一个字';
+        document.getElementById('btnNext').textContent = '下一个字';
     }}
 
     // 播放语音
     await playSeq(['char_' + idx + '_story.mp3']);
     // 短暂停顿后播放含义
-    setTimeout(async () => {{
+    pendingTimer = setTimeout(async () => {{
+        pendingTimer = null;
         if (curIdx !== idx) return; // 已经翻页了
         await playSeq(['char_' + idx + '_meaning.mp3', 'char_' + idx + '_words.mp3', 'char_' + idx + '_sentence.mp3']);
     }}, 600);
@@ -244,7 +247,7 @@ async function startReview() {{
     // 简单复习：随机展示已学过的字
     const idx = learned[Math.floor(Math.random() * learned.length)];
     showPage('learnPage');
-    document.getElementById('btnNext').textContent = '🔄 再复习一个';
+    document.getElementById('btnNext').textContent = '再复习一个';
     await showChar(idx);
 }}
 
