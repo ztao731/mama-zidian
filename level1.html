@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>第1关 · 象形字入门</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#fdf5e6;color:#5c4033;min-height:100vh}
+.container{max-width:480px;margin:0 auto;padding:16px 20px 24px}
+/* 顶部 */
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.header a{text-decoration:none;color:#8b7355;font-size:22px;padding:4px}
+.title{font-size:18px;font-weight:bold;color:#c0392b}
+.progress{font-size:14px;color:#8b7355}
+/* 大字 */
+.big-char-area{text-align:center;margin:16px 0 8px}
+.big-char{font-size:96px;font-family:'KaiTi','STKaiti',serif;line-height:1.2;cursor:pointer;display:inline-block;transition:transform .15s}
+.big-char:active{transform:scale(1.08)}
+.pinyin{font-size:20px;color:#8b7355;text-align:center;margin-bottom:16px}
+/* 区块 */
+.box{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.box .label{font-weight:bold;color:#c0392b;font-size:14px;margin-bottom:8px}
+.box .text{font-size:15px;line-height:1.7}
+.meaning-row{display:flex;align-items:baseline;margin-bottom:6px}
+.meaning-row .ml{color:#c0392b;font-weight:bold;min-width:4em;font-size:15px}
+.meaning-row .me{font-size:14px;color:#444}
+.word-row{font-size:15px;margin-top:4px}
+.word-row b{color:#c0392b}
+.sentence-row{font-size:15px;color:#444}
+/* 按钮 */
+.btns{display:flex;gap:12px;margin-top:16px}
+.btn{padding:14px 0;border-radius:12px;font-size:16px;border:none;cursor:pointer;flex:1;text-align:center;font-weight:bold;transition:opacity .2s}
+.btn:active{opacity:.7}
+.btn-prev{background:#eee;color:#666}
+.btn-next{background:#c0392b;color:#fff}
+.btn-again{background:#f0e6d3;color:#c0392b;border:2px solid #c0392b}
+/* 完成页 */
+.done-page{display:none;text-align:center;padding:40px 20px}
+.done-page .icon{font-size:64px}
+.done-page h2{font-size:22px;margin:16px 0 8px}
+.done-page .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.done-page .grid span{font-size:40px;background:#fff;border-radius:10px;padding:8px;font-family:'KaiTi','STKaiti',serif}
+.done-page a{display:inline-block;padding:14px 32px;background:#c0392b;color:#fff;border-radius:12px;text-decoration:none;font-size:17px}
+/* 指示器 */
+.playing{display:none;text-align:center;font-size:13px;color:#c0392b;margin-top:8px;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.3}}
+</style>
+</head>
+<body>
+
+<div class="container" id="learnPage">
+  <div class="header">
+    <a href="index.html">←</a>
+    <span class="title">第1关 · 象形字入门</span>
+    <span class="progress" id="progress">第1/9个字</span>
+  </div>
+  
+  <div class="big-char-area">
+    <div class="big-char" id="bigChar" onclick="replayAll()"></div>
+  </div>
+  <div class="pinyin" id="pinyin"></div>
+  
+  <div class="box">
+    <div class="label">✏ 字源故事</div>
+    <div class="text" id="storyText"></div>
+  </div>
+  
+  <div class="box" id="meaningList"></div>
+  
+  <div class="box">
+    <div class="word-row" id="wordRow"></div>
+  </div>
+  <div class="box">
+    <div class="sentence-row" id="sentenceRow"></div>
+  </div>
+  
+  <div class="btns">
+    <button class="btn btn-again" onclick="replayAll()">🔊 再听一遍</button>
+    <button class="btn btn-next" id="btnNext" onclick="nextChar()">下一个字 →</button>
+  </div>
+  <div class="playing" id="playing">正在讲解中...</div>
+</div>
+
+<div class="done-page" id="donePage">
+  <div class="icon">🎉</div>
+  <h2>第1关完成！</h2>
+  <p style="color:#8b7355">你已经学会了 9 个象形字</p>
+  <div class="grid" id="doneGrid"></div>
+  <a href="index.html">返回首页</a>
+</div>
+
+<script>
+var CHARS = [
+  {"c":"日","p":"rì","s":"古人画太阳——一个圆圈，中间一个点。你看这个字，方方的框像太阳的轮廓，中间一横就是太阳的光芒。太阳每天从东升起西落下，古人抬头就能看到。","m":[{"l":"太阳","e":"太阳每天从东边升起，西边落下。"},{"l":"天、日子","e":"今天是几号？明天是星期五。"},{"l":"日期","e":"你的生日是几月几号？"}],"w":["日光","日子","日历","日出"],"sen":"今天天气很好，有太阳。"},
+  {"c":"月","p":"yuè","s":"古人画月亮——弯弯的像一把镰刀。你看这个字，是不是像天上弯弯的月亮？月亮有时候圆有时候弯，古人把最常看到的弯月画了下来。","m":[{"l":"月亮","e":"晚上月亮出来了，院子里亮堂堂的。"},{"l":"月份","e":"一个月有三十天。"},{"l":"每月","e":"月票就是每个月的票，月租就是每个月的租金。"}],"w":["月光","月亮","月票","月租"],"sen":"今晚的月亮又圆又亮。"},
+  {"c":"山","p":"shān","s":"古人画山——三座山峰并排。你看这个字，三竖画得像三座山，下面一横是大地。古人住在山边，一抬头就看到连绵的山峰。","m":[{"l":"山","e":"他家后面有座大山。"},{"l":"像山的东西","e":"人山人海，就是人多得像山一样。"},{"l":"地名","e":"山东、山西——就是山的东西两边。"}],"w":["上山","下山","山顶","山脚"],"sen":"星期天，一家人去爬山。"},
+  {"c":"水","p":"shuǐ","s":"古人画水——中间一条弯弯曲曲的河流，两边有小水花。你看这个字，中间一竖像河流，两边像溅起的水花。水是生命之源，古人逐水而居。","m":[{"l":"水","e":"口渴了要喝水。"},{"l":"河流","e":"这条河里的水很清。"},{"l":"液体","e":"药水、墨水、胶水——都带一个水字。"}],"w":["喝水","河水","开水","水果"],"sen":"天热了，多喝点水。"},
+  {"c":"火","p":"huǒ","s":"古人画火——一簇跳动的火焰。你看这个字，上面两点像火苗往上窜，下面像木柴在燃烧。火能做饭、取暖，是人类最早学会使用的东西之一。","m":[{"l":"火、火焰","e":"用火做饭。"},{"l":"着火、起火","e":"小心，别着火了。"},{"l":"生气","e":"他发火了——就是生气、发脾气了。"},{"l":"受欢迎","e":"这件衣服卖得很火——就是很多人喜欢、卖得好。"}],"w":["火车","大火","发火","火红"],"sen":"妈妈在厨房用火做饭。"},
+  {"c":"人","p":"rén","s":"古人画人——一个侧身站立的人，有身体，有两条腿。你看这个字，一撇一捺像不像一个人在走路？这就是人的样子，简单又有力。","m":[{"l":"人类、人","e":"一个人。"},{"l":"别人","e":"不要拿别人的东西。"},{"l":"人们、大家","e":"街上人很多。"}],"w":["大人","好人","人们","人口"],"sen":"那个人是我的朋友。"},
+  {"c":"目","p":"mù","s":"古人画眼睛——外面一圈是眼眶，里面是眼珠。你看这个字，是不是像一个竖起来的眼睛？目就是眼睛，古人把自己的眼睛画了下来。","m":[{"l":"眼睛","e":"双目有神。"},{"l":"看","e":"目送，就是看着别人走远。"},{"l":"条目、项目","e":"目录——一本书的题目列表。"},{"l":"目前","e":"目前就是眼前、现在。"}],"w":["目光","目前","目录","目的"],"sen":"目前我还不认识这个字。"},
+  {"c":"口","p":"kǒu","s":"古人画嘴巴——方方正正一张嘴。你看这个字，四四方方像不像张大嘴巴的样子？口就是嘴，用来吃饭、说话、唱歌。","m":[{"l":"嘴巴","e":"张口说话。"},{"l":"出入口","e":"门口——进出门的地方。路口——街道交叉的地方。"},{"l":"人口","e":"一家三口，就是家里有三个人。"},{"l":"量词","e":"一口井、一口锅——都用口来计数。"}],"w":["门口","出口","口水","人口"],"sen":"我家门口有一棵大树。"},
+  {"c":"手","p":"shǒu","s":"古人画手——五根手指张开。你看这个字，上面一撇像大拇指，中间两横像手掌，下面一竖像手臂。手是人类最灵巧的工具。","m":[{"l":"手","e":"洗手、左手、右手。"},{"l":"做事的人","e":"帮手——帮忙的人。能手——很会做事的人。"},{"l":"拿、拿着","e":"手机——手上拿着的机器。手册——手里拿着的小本子。"}],"w":["手机","帮手","洗手","手工"],"sen":"用手机给妈妈打个电话。"}
+];
+
+var idx = 0, audio = null;
+
+function showChar(i) {
+  idx = i;
+  var ch = CHARS[i];
+  document.getElementById('bigChar').textContent = ch.c;
+  document.getElementById('pinyin').textContent = ch.p;
+  document.getElementById('storyText').textContent = ch.s;
+  document.getElementById('progress').textContent = '第' + (i+1) + '/' + CHARS.length + '个字';
+  
+  var mh = '';
+  ch.m.forEach(function(m) {
+    mh += '<div class="meaning-row"><span class="ml">' + m.l + '</span><span class="me">' + m.e + '</span></div>';
+  });
+  document.getElementById('meaningList').innerHTML = '<div class="label">📖 多义字</div>' + mh;
+  document.getElementById('wordRow').innerHTML = '词语：<b>' + ch.w.join('、') + '</b>';
+  document.getElementById('sentenceRow').textContent = '例句：' + ch.sen;
+  
+  document.getElementById('btnNext').textContent = (i === CHARS.length - 1) ? '✅ 完成学习' : '下一个字 →';
+  
+  // 自动播放
+  playSeq(['char_' + i + '_story', 'char_' + i + '_meaning', 'char_' + i + '_words', 'char_' + i + '_sentence']);
+}
+
+function playAudio(name) {
+  return new Promise(function(resolve) {
+    stopAudio();
+    var a = new Audio('audio/lv1/' + name + '.mp3');
+    audio = a;
+    document.getElementById('playing').style.display = 'block';
+    a.onended = function() { audio = null; document.getElementById('playing').style.display = 'none'; resolve(); };
+    a.onerror = function() { audio = null; document.getElementById('playing').style.display = 'none'; resolve(); };
+    a.play().catch(function() { audio = null; document.getElementById('playing').style.display = 'none'; resolve(); });
+  });
+}
+
+function stopAudio() {
+  if (audio) { audio.pause(); audio = null; }
+  document.getElementById('playing').style.display = 'none';
+}
+
+async function playSeq(names) {
+  for (var i = 0; i < names.length; i++) {
+    await playAudio(names[i]);
+  }
+}
+
+function replayAll() {
+  stopAudio();
+  playSeq(['char_' + idx + '_story', 'char_' + idx + '_meaning', 'char_' + idx + '_words', 'char_' + idx + '_sentence']);
+}
+
+function nextChar() {
+  stopAudio();
+  if (idx < CHARS.length - 1) {
+    showChar(idx + 1);
+    window.scrollTo(0, 0);
+  } else {
+    showDone();
+  }
+}
+
+function showDone() {
+  document.getElementById('learnPage').style.display = 'none';
+  document.getElementById('donePage').style.display = 'block';
+  var g = '';
+  CHARS.forEach(function(ch, i) {
+    g += '<span onclick="goChar(' + i + ')">' + ch.c + '</span>';
+  });
+  document.getElementById('doneGrid').innerHTML = g;
+}
+
+function goChar(i) {
+  document.getElementById('donePage').style.display = 'none';
+  document.getElementById('learnPage').style.display = 'block';
+  showChar(i);
+}
+
+// 启动
+showChar(0);
+</script>
+</body>
+</html>
