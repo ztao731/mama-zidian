@@ -244,8 +244,8 @@ async function startReview() {{
         return;
     }}
     stopAudio();
-    // 简单复习：随机展示已学过的字
-    const idx = learned[Math.floor(Math.random() * learned.length)];
+    // 从第一个字开始顺序复习
+    const idx = 0;
     showPage('learnPage');
     document.getElementById('btnNext').textContent = '再复习一个';
     await showChar(idx);
