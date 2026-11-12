@@ -104,28 +104,40 @@ var currentLevel = 1;
 var curIdx = 0;
 var currentAudio = null;
 var pendingTimer = null;
+var sessionId = 0;  // 递增，让过期回调自动失效
 
 function stopAudio() {
-    if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.removeAttribute('src');
+        currentAudio.load();
+        currentAudio = null;
+    }
     if (pendingTimer) { clearTimeout(pendingTimer); pendingTimer = null; }
     document.getElementById('playingIndicator').style.display = 'none';
+    sessionId++;  // 所有旧回调失效
 }
 
 function playAudio(name) {
     return new Promise(function(resolve) {
         var url = ALL_LEVELS[currentLevel-1].audioBase + name;
-        stopAudio();
+        var sid = sessionId;
         var a = new Audio(url);
         currentAudio = a;
         document.getElementById('playingIndicator').style.display = 'block';
-        a.onended = function() { currentAudio = null; document.getElementById('playingIndicator').style.display = 'none'; resolve(); };
-        a.onerror = function() { currentAudio = null; document.getElementById('playingIndicator').style.display = 'none'; resolve(); };
-        a.play().catch(function(e) { console.log('audio play error:', e); resolve(); });
+        var clean = function() { if (sessionId === sid && currentAudio === a) { currentAudio = null; document.getElementById('playingIndicator').style.display = 'none'; } };
+        a.onended = function() { clean(); resolve(); };
+        a.onerror = function() { clean(); resolve(); };
+        a.play().catch(function() { clean(); resolve(); });
     });
 }
 
 async function playSeq(names) {
-    for (var i = 0; i < names.length; i++) await playAudio(names[i]);
+    var sid = sessionId;
+    for (var i = 0; i < names.length; i++) {
+        if (sessionId !== sid) return;
+        await playAudio(names[i]);
+    }
 }
 
 function level() { return ALL_LEVELS[currentLevel-1]; }
@@ -193,9 +205,10 @@ async function showChar(idx) {
     }
 
     await playSeq(['char_' + idx + '_story.mp3']);
+    var sid = sessionId;
     pendingTimer = setTimeout(async function() {
         pendingTimer = null;
-        if (curIdx !== idx) return;
+        if (curIdx !== idx || sessionId !== sid) return;
         await playSeq(['char_' + idx + '_meaning.mp3', 'char_' + idx + '_words.mp3', 'char_' + idx + '_sentence.mp3']);
     }, 600);
 }
