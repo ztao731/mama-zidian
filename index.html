@@ -5,10 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>字源识字</title>
 <style>
-
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#fef9f0;color:#3d3226;min-height:100vh;overflow:hidden}
-/* ---- 首页 ---- */
 .home{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;padding:20px}
 .home .icon{font-size:80px;margin-bottom:16px}
 .home h1{font-size:28px;color:#5c4033;margin-bottom:8px}
@@ -17,10 +15,11 @@ body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#fef9f0;c
 .btn-start{background:#c0392b;color:#fff}
 .btn-review{background:#f5e6d3;color:#5c4033;border:2px solid #c0392b}
 .home .hint{margin-top:24px;font-size:13px;color:#a89070}
-/* ---- 学习页 ---- */
 .learn{display:none;flex-direction:column;align-items:center;height:100vh;padding:20px;overflow-y:auto}
-.learn .progress{font-size:13px;color:#8b7355;margin-bottom:10px}
-.learn .big-char{font-size:180px;line-height:1;color:#5c4033;margin:10px 0;font-family:'KaiTi','STKaiti','楷体',serif;cursor:pointer}
+.learn .progress{font-size:13px;color:#8b7355;margin-bottom:10px;display:flex;align-items:center}
+.learn .progress .back-btn{background:none;border:none;font-size:20px;cursor:pointer;color:#8b7355;padding:0 8px;flex-shrink:0}
+.learn .progress span{flex:1;text-align:center}
+.learn .big-char{font-size:180px;line-height:1;color:#5c4033;margin:10px 0;font-family:'KaiTi','STKaiti',serif;cursor:pointer}
 .learn .big-char:active{color:#c0392b}
 .learn .pinyin{font-size:22px;color:#8b7355;margin-bottom:4px}
 .learn .story-box{width:100%;max-width:500px;background:#fff;border-radius:14px;padding:16px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:left}
@@ -35,7 +34,6 @@ body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#fef9f0;c
 .learn .btns button{padding:14px 28px;border-radius:12px;font-size:17px;cursor:pointer;border:none}
 .learn .btn-again{background:#f5e6d3;color:#5c4033}
 .learn .btn-next{background:#c0392b;color:#fff}
-/* ---- 完成页 ---- */
 .done{display:none;flex-direction:column;align-items:center;justify-content:center;height:100vh;padding:20px;text-align:center}
 .done .icon{font-size:80px;margin-bottom:16px}
 .done h2{font-size:24px;color:#5c4033;margin-bottom:8px}
@@ -43,11 +41,7 @@ body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#fef9f0;c
 .done .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:30px}
 .done .grid span{font-size:36px;background:#fff;border-radius:10px;padding:10px;text-align:center;font-family:'KaiTi','STKaiti',serif}
 .done .btn{padding:14px 32px;border-radius:12px;font-size:17px;cursor:pointer;border:none;background:#c0392b;color:#fff}
-/* ---- 听音频中提示 ---- */
 .playing-indicator{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);color:#fff;padding:12px 24px;border-radius:20px;font-size:15px;display:none;z-index:100;pointer-events:none}
-
-
-/* ---- 关卡选择页 ---- */
 .level-select{display:flex;flex-direction:column;align-items:center;min-height:100vh;padding:20px;overflow-y:auto}
 .level-select h1{font-size:28px;color:#5c4033;margin:16px 0 4px}
 .level-select .sub{font-size:14px;color:#8b7355;margin-bottom:24px}
@@ -63,26 +57,16 @@ body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#fef9f0;c
 .level-card.done{border:2px solid #27ae60}
 .level-card.done .lvl-num::after{content:' ✓';font-size:16px;color:#27ae60}
 .level-card.current{border:2px solid #c0392b}
-
-/* ---- 进度条 ---- */
-.learn .progress{font-size:14px;color:#8b7355;margin-bottom:6px;display:flex;align-items:center}
-.learn .progress .back-btn{background:none;border:none;font-size:20px;cursor:pointer;color:#8b7355;padding:0 8px;flex-shrink:0}
-.learn .progress span{flex:1;text-align:center}
-
-/* ---- 加载指示 ---- */
-.loading{display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.75);color:#fff;padding:16px 28px;border-radius:14px;font-size:15px;z-index:200}
 </style>
 </head>
 <body>
 
-<!-- 关卡选择页 -->
 <div class="level-select" id="selectPage">
   <h1>字源识字</h1>
   <div class="sub">50个基础汉字 · 10关循序渐进</div>
   <div class="level-grid" id="levelGrid"></div>
 </div>
 
-<!-- 学习页 -->
 <div class="learn" id="learnPage">
   <div class="progress" id="progress">
     <button class="back-btn" onclick="goHome()">←</button>
@@ -103,7 +87,6 @@ body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#fef9f0;c
   </div>
 </div>
 
-<!-- 完成页 -->
 <div class="done" id="donePage">
   <div class="icon">✓</div>
   <h2 id="doneTitle"></h2>
@@ -113,43 +96,14 @@ body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#fef9f0;c
 </div>
 
 <div class="playing-indicator" id="playingIndicator">正在讲解中...</div>
-<div class="loading" id="loading">加载中...</div>
 
 <script>
-// ===== 关卡数据（元数据，不含音频）=====
-const ALL_LEVELS = [{"id": 1, "title": "第1关 · 象形字入门", "subtitle": "学汉字，懂故事——不靠死记硬背", "chars": [{"char": "日", "pinyin": "rì", "meanings": [{"label": "太阳", "eg": "太阳每天从东边升起，西边落下。"}, {"label": "天、日子", "eg": "今天是几号？明天是星期五。"}, {"label": "日期", "eg": "你的生日是几月几号？"}], "words": ["日光", "日子", "日历", "日出"], "sentence": "今天天气很好，有太阳。"}, {"char": "月", "pinyin": "yuè", "meanings": [{"label": "月亮", "eg": "晚上月亮出来了，院子里亮堂堂的。"}, {"label": "月份", "eg": "一个月有三十天。"}, {"label": "每月", "eg": "月票就是每个月的票，月租就是每个月的租金。"}], "words": ["月光", "月亮", "月票", "月租"], "sentence": "今晚的月亮又圆又亮。"}, {"char": "山", "pinyin": "shān", "meanings": [{"label": "山", "eg": "他家后面有座大山。"}, {"label": "像山的东西", "eg": "人山人海，就是人多得像山一样。"}, {"label": "地名", "eg": "山东、山西——就是山的东西两边。"}], "words": ["上山", "下山", "山顶", "山脚"], "sentence": "星期天，一家人去爬山。"}, {"char": "水", "pinyin": "shuǐ", "meanings": [{"label": "水", "eg": "口渴了要喝水。"}, {"label": "河流", "eg": "这条河里的水很清。"}, {"label": "液体", "eg": "药水、墨水、胶水——都带一个水字。"}], "words": ["喝水", "河水", "开水", "水果"], "sentence": "天热了，多喝点水。"}, {"char": "火", "pinyin": "huǒ", "meanings": [{"label": "火、火焰", "eg": "用火做饭。"}, {"label": "着火、起火", "eg": "小心，别着火了。"}, {"label": "生气", "eg": "他发火了——就是生气、发脾气了。"}, {"label": "受欢迎", "eg": "这件衣服卖得很火——就是很多人喜欢、卖得好。"}], "words": ["火车", "大火", "发火", "火红"], "sentence": "妈妈在厨房用火做饭。"}, {"char": "人", "pinyin": "rén", "meanings": [{"label": "人类、人", "eg": "一个人。"}, {"label": "别人", "eg": "不要拿别人的东西。"}, {"label": "人们、大家", "eg": "街上人很多。"}], "words": ["大人", "好人", "人们", "人口"], "sentence": "那个人是我的朋友。"}, {"char": "目", "pinyin": "mù", "meanings": [{"label": "眼睛", "eg": "双目有神。"}, {"label": "看", "eg": "目送，就是看着别人走远。"}, {"label": "条目、项目", "eg": "目录——一本书的题目列表。"}, {"label": "目前", "eg": "目前就是眼前、现在。"}], "words": ["目光", "目前", "目录", "目的"], "sentence": "目前我还不认识这个字。"}, {"char": "口", "pinyin": "kǒu", "meanings": [{"label": "嘴巴", "eg": "张口说话。"}, {"label": "出入口", "eg": "门口——进出门的地方。路口——街道交叉的地方。"}, {"label": "人口", "eg": "一家三口，就是家里有三个人。"}, {"label": "量词", "eg": "一口井、一口锅——都用口来计数。"}], "words": ["门口", "出口", "口水", "人口"], "sentence": "我家门口有一棵大树。"}, {"char": "手", "pinyin": "shǒu", "meanings": [{"label": "手", "eg": "洗手、左手、右手。"}, {"label": "做事的人", "eg": "帮手——帮忙的人。能手——很会做事的人。"}, {"label": "拿、拿着", "eg": "手机——手上拿着的机器。手册——手里拿着的小本子。"}], "words": ["手机", "帮手", "洗手", "手工"], "sentence": "用手机给妈妈打个电话。"}], "audioBase": "audio/lv1/"}, {"id": 2, "title": "第2关 · 象形字——动物", "subtitle": "古人画动物，每个字都是一幅简笔画", "chars": [{"char": "马", "pinyin": "mǎ", "etymology": "古人画马，画出长长的脸、奔跑的四条腿，还有飘起来的鬃毛和尾巴。你看这个字，上面像马头，下面四点像马蹄在跑。几千年前的人骑马打猎，所以把马画了下来。", "meanings": [{"label": "马（动物）", "eg": "草原上有很多马。"}, {"label": "大", "eg": "马路——就是大路、宽路。"}, {"label": "立刻", "eg": "马上——就是立刻、很快的意思。"}], "words": ["马上", "马路", "骑马", "马车"], "sentence": "爸爸骑着马在草原上跑。"}, {"char": "牛", "pinyin": "niú", "etymology": "古人画牛，重点画它的头——两个弯弯的大角，还有宽宽的鼻子。你看这个字，上面一撇一横像两只角，下面一横像牛头。牛是古人最重要的帮手，用来耕田、拉车。", "meanings": [{"label": "牛（动物）", "eg": "田里有一头牛在耕地。"}, {"label": "厉害", "eg": "你真牛——就是你真厉害、真棒。"}, {"label": "固执", "eg": "牛脾气——就是很固执、不听话。"}], "words": ["牛奶", "牛肉", "水牛", "牛气"], "sentence": "这头牛在田里帮爷爷耕地。"}, {"char": "羊", "pinyin": "yáng", "etymology": "古人画羊，画的是一个正面羊头——两只角弯下来，尖尖的嘴巴。你看这个字，上面两点像羊角，下面三横像羊的脸。羊很温顺，古人很喜欢养羊。", "meanings": [{"label": "羊（动物）", "eg": "山坡上有一群羊。"}, {"label": "吉祥", "eg": "羊在古时候代表吉祥、美好。"}], "words": ["山羊", "羊毛", "羊肉", "羊圈"], "sentence": "草地上有一群白色的羊。"}, {"char": "鱼", "pinyin": "yú", "etymology": "古人画鱼，画出鱼头、鱼身、鱼鳞和鱼尾巴。你看这个字，上面像鱼头，中间田字像有鳞片的鱼身，下面一横像鱼尾巴。古人住在河边，天天看到鱼，就把鱼画了下来。", "meanings": [{"label": "鱼（动物）", "eg": "河里有很多鱼。"}, {"label": "多余", "eg": "鱼字和余字同音，过年吃鱼代表年年有余。"}], "words": ["金鱼", "小鱼", "钓鱼", "鱼片"], "sentence": "爸爸带我去河边钓鱼。"}, {"char": "鸟", "pinyin": "niǎo", "etymology": "古人画鸟，画一只站在树枝上的小鸟——圆圆的头、尖尖的嘴、翅膀贴在身上，还有小爪子。你看这个字，上面像鸟头，中间像身体和翅膀，下面一横像鸟站着的树枝。", "meanings": [{"label": "鸟（动物）", "eg": "树上有一只小鸟。"}, {"label": "小", "eg": "鸟在口语里有时也表示小的意思。"}], "words": ["小鸟", "鸟儿", "飞鸟", "鸟窝"], "sentence": "早上一只小鸟在窗外唱歌。"}], "audioBase": "audio/lv2/"}];
+var ALL_LEVELS = [{"id": 1, "title": "第1关 · 象形字入门", "subtitle": "学汉字，懂故事——不靠死记硬背", "chars": [{"char": "日", "pinyin": "rì", "etymology": "古人画太阳——一个圆圈，中间一个点。你看这个字，方方的框像太阳的轮廓，中间一横就是太阳的光芒。太阳每天从东升起西落下，古人抬头就能看到。", "meanings": [{"label": "太阳", "eg": "太阳每天从东边升起，西边落下。"}, {"label": "天、日子", "eg": "今天是几号？明天是星期五。"}, {"label": "日期", "eg": "你的生日是几月几号？"}], "words": ["日光", "日子", "日历", "日出"], "sentence": "今天天气很好，有太阳。"}, {"char": "月", "pinyin": "yuè", "etymology": "古人画月亮——弯弯的像一把镰刀。你看这个字，是不是像天上弯弯的月亮？月亮有时候圆有时候弯，古人把最常看到的弯月画了下来。", "meanings": [{"label": "月亮", "eg": "晚上月亮出来了，院子里亮堂堂的。"}, {"label": "月份", "eg": "一个月有三十天。"}, {"label": "每月", "eg": "月票就是每个月的票，月租就是每个月的租金。"}], "words": ["月光", "月亮", "月票", "月租"], "sentence": "今晚的月亮又圆又亮。"}, {"char": "山", "pinyin": "shān", "etymology": "古人画山——三座山峰并排。你看这个字，三竖画得像三座山，下面一横是大地。古人住在山边，一抬头就看到连绵的山峰。", "meanings": [{"label": "山", "eg": "他家后面有座大山。"}, {"label": "像山的东西", "eg": "人山人海，就是人多得像山一样。"}, {"label": "地名", "eg": "山东、山西——就是山的东西两边。"}], "words": ["上山", "下山", "山顶", "山脚"], "sentence": "星期天，一家人去爬山。"}, {"char": "水", "pinyin": "shuǐ", "etymology": "古人画水——中间一条弯弯曲曲的河流，两边有小水花。你看这个字，中间一竖像河流，两边像溅起的水花。水是生命之源，古人逐水而居。", "meanings": [{"label": "水", "eg": "口渴了要喝水。"}, {"label": "河流", "eg": "这条河里的水很清。"}, {"label": "液体", "eg": "药水、墨水、胶水——都带一个水字。"}], "words": ["喝水", "河水", "开水", "水果"], "sentence": "天热了，多喝点水。"}, {"char": "火", "pinyin": "huǒ", "etymology": "古人画火——一簇跳动的火焰。你看这个字，上面两点像火苗往上窜，下面像木柴在燃烧。火能做饭、取暖，是人类最早学会使用的东西之一。", "meanings": [{"label": "火、火焰", "eg": "用火做饭。"}, {"label": "着火、起火", "eg": "小心，别着火了。"}, {"label": "生气", "eg": "他发火了——就是生气、发脾气了。"}, {"label": "受欢迎", "eg": "这件衣服卖得很火——就是很多人喜欢、卖得好。"}], "words": ["火车", "大火", "发火", "火红"], "sentence": "妈妈在厨房用火做饭。"}, {"char": "人", "pinyin": "rén", "etymology": "古人画人——一个侧身站立的人，有身体，有两条腿。你看这个字，一撇一捺像不像一个人在走路？这就是人的样子，简单又有力。", "meanings": [{"label": "人类、人", "eg": "一个人。"}, {"label": "别人", "eg": "不要拿别人的东西。"}, {"label": "人们、大家", "eg": "街上人很多。"}], "words": ["大人", "好人", "人们", "人口"], "sentence": "那个人是我的朋友。"}, {"char": "目", "pinyin": "mù", "etymology": "古人画眼睛——外面一圈是眼眶，里面是眼珠。你看这个字，是不是像一个竖起来的眼睛？目就是眼睛，古人把自己的眼睛画了下来。", "meanings": [{"label": "眼睛", "eg": "双目有神。"}, {"label": "看", "eg": "目送，就是看着别人走远。"}, {"label": "条目、项目", "eg": "目录——一本书的题目列表。"}, {"label": "目前", "eg": "目前就是眼前、现在。"}], "words": ["目光", "目前", "目录", "目的"], "sentence": "目前我还不认识这个字。"}, {"char": "口", "pinyin": "kǒu", "etymology": "古人画嘴巴——方方正正一张嘴。你看这个字，四四方方像不像张大嘴巴的样子？口就是嘴，用来吃饭、说话、唱歌。", "meanings": [{"label": "嘴巴", "eg": "张口说话。"}, {"label": "出入口", "eg": "门口——进出门的地方。路口——街道交叉的地方。"}, {"label": "人口", "eg": "一家三口，就是家里有三个人。"}, {"label": "量词", "eg": "一口井、一口锅——都用口来计数。"}], "words": ["门口", "出口", "口水", "人口"], "sentence": "我家门口有一棵大树。"}, {"char": "手", "pinyin": "shǒu", "etymology": "古人画手——五根手指张开。你看这个字，上面一撇像大拇指，中间两横像手掌，下面一竖像手臂。手是人类最灵巧的工具。", "meanings": [{"label": "手", "eg": "洗手、左手、右手。"}, {"label": "做事的人", "eg": "帮手——帮忙的人。能手——很会做事的人。"}, {"label": "拿、拿着", "eg": "手机——手上拿着的机器。手册——手里拿着的小本子。"}], "words": ["手机", "帮手", "洗手", "手工"], "sentence": "用手机给妈妈打个电话。"}], "audioBase": "audio/lv1/"}, {"id": 2, "title": "第2关 · 象形字——动物", "subtitle": "古人画动物，每个字都是一幅简笔画", "chars": [{"char": "马", "pinyin": "mǎ", "etymology": "古人画马，画出长长的脸、奔跑的四条腿，还有飘起来的鬃毛和尾巴。你看这个字，上面像马头，下面四点像马蹄在跑。几千年前的人骑马打猎，所以把马画了下来。", "meanings": [{"label": "马（动物）", "eg": "草原上有很多马。"}, {"label": "大", "eg": "马路——就是大路、宽路。"}, {"label": "立刻", "eg": "马上——就是立刻、很快的意思。"}], "words": ["马上", "马路", "骑马", "马车"], "sentence": "爸爸骑着马在草原上跑。"}, {"char": "牛", "pinyin": "niú", "etymology": "古人画牛，重点画它的头——两个弯弯的大角，还有宽宽的鼻子。你看这个字，上面一撇一横像两只角，下面一横像牛头。牛是古人最重要的帮手，用来耕田、拉车。", "meanings": [{"label": "牛（动物）", "eg": "田里有一头牛在耕地。"}, {"label": "厉害", "eg": "你真牛——就是你真厉害、真棒。"}, {"label": "固执", "eg": "牛脾气——就是很固执、不听话。"}], "words": ["牛奶", "牛肉", "水牛", "牛气"], "sentence": "这头牛在田里帮爷爷耕地。"}, {"char": "羊", "pinyin": "yáng", "etymology": "古人画羊，画的是一个正面羊头——两只角弯下来，尖尖的嘴巴。你看这个字，上面两点像羊角，下面三横像羊的脸。羊很温顺，古人很喜欢养羊。", "meanings": [{"label": "羊（动物）", "eg": "山坡上有一群羊。"}, {"label": "吉祥", "eg": "羊在古时候代表吉祥、美好。"}], "words": ["山羊", "羊毛", "羊肉", "羊圈"], "sentence": "草地上有一群白色的羊。"}, {"char": "鱼", "pinyin": "yú", "etymology": "古人画鱼，画出鱼头、鱼身、鱼鳞和鱼尾巴。你看这个字，上面像鱼头，中间田字像有鳞片的鱼身，下面一横像鱼尾巴。古人住在河边，天天看到鱼，就把鱼画了下来。", "meanings": [{"label": "鱼（动物）", "eg": "河里有很多鱼。"}, {"label": "多余", "eg": "鱼字和余字同音，过年吃鱼代表年年有余。"}], "words": ["金鱼", "小鱼", "钓鱼", "鱼片"], "sentence": "爸爸带我去河边钓鱼。"}, {"char": "鸟", "pinyin": "niǎo", "etymology": "古人画鸟，画一只站在树枝上的小鸟——圆圆的头、尖尖的嘴、翅膀贴在身上，还有小爪子。你看这个字，上面像鸟头，中间像身体和翅膀，下面一横像鸟站着的树枝。", "meanings": [{"label": "鸟（动物）", "eg": "树上有一只小鸟。"}, {"label": "小", "eg": "鸟在口语里有时也表示小的意思。"}], "words": ["小鸟", "鸟儿", "飞鸟", "鸟窝"], "sentence": "早上一只小鸟在窗外唱歌。"}], "audioBase": "audio/lv2/"}];
 
-// ===== 音频管理（按需加载 + 缓存）=====
-const audioCache = {};
-const preloadQueue = [];
-
-function getAudioUrl(lvl, name) {
-    const key = lvl + '|' + name;
-    if (audioCache[key]) return audioCache[key];
-    const url = ALL_LEVELS[lvl-1].audioBase + name;
-    const audio = new Audio();
-    audio.src = url;
-    audio.preload = 'auto';
-    audioCache[key] = audio;
-    return url;
-}
-
-function preloadLevelAudio(lvl) {
-    const base = ALL_LEVELS[lvl-1].audioBase;
-    const files = ['welcome.mp3', 'done.mp3'];
-    for (let i = 0; i < ALL_LEVELS[lvl-1].chars.length; i++) {
-        files.push('char_' + i + '_story.mp3');
-        files.push('char_' + i + '_meaning.mp3');
-        files.push('char_' + i + '_words.mp3');
-        files.push('char_' + i + '_sentence.mp3');
-    }
-    files.forEach(name => getAudioUrl(lvl, name));
-}
-
-let currentLevel = 1;
-let curIdx = 0;
-let currentAudio = null;
-let pendingTimer = null;
+var currentLevel = 1;
+var curIdx = 0;
+var currentAudio = null;
+var pendingTimer = null;
 
 function stopAudio() {
     if (currentAudio) { currentAudio.pause(); currentAudio = null; }
@@ -158,61 +112,49 @@ function stopAudio() {
 }
 
 function playAudio(name) {
-    return new Promise(resolve => {
-        const url = getAudioUrl(currentLevel, name);
-        if (!url) { resolve(); return; }
+    return new Promise(function(resolve) {
+        var url = ALL_LEVELS[currentLevel-1].audioBase + name;
         stopAudio();
-        const a = new Audio(url);
+        var a = new Audio(url);
         currentAudio = a;
         document.getElementById('playingIndicator').style.display = 'block';
-        a.onended = () => { currentAudio = null; document.getElementById('playingIndicator').style.display = 'none'; resolve(); };
-        a.onerror = () => { currentAudio = null; document.getElementById('playingIndicator').style.display = 'none'; resolve(); };
-        a.play();
+        a.onended = function() { currentAudio = null; document.getElementById('playingIndicator').style.display = 'none'; resolve(); };
+        a.onerror = function() { currentAudio = null; document.getElementById('playingIndicator').style.display = 'none'; resolve(); };
+        a.play().catch(function(e) { console.log('audio play error:', e); resolve(); });
     });
 }
 
 async function playSeq(names) {
-    for (const n of names) await playAudio(n);
+    for (var i = 0; i < names.length; i++) await playAudio(names[i]);
 }
 
 function level() { return ALL_LEVELS[currentLevel-1]; }
 function chars() { return level().chars; }
 
-// ===== 页面切换 =====
 function showPage(id) {
-    ['selectPage','learnPage','donePage'].forEach(x => document.getElementById(x).style.display='none');
+    ['selectPage','learnPage','donePage'].forEach(function(x) { document.getElementById(x).style.display = 'none'; });
     document.getElementById(id).style.display = id==='selectPage'?'flex':'flex';
 }
 
-// ===== 关卡选择页 =====
 function renderLevelGrid() {
-    const grid = document.getElementById('levelGrid');
-    let html = '';
-    const completed = JSON.parse(localStorage.getItem('mama_completed') || '[]');
-    for (let i = 0; i < ALL_LEVELS.length; i++) {
-        const lvl = ALL_LEVELS[i];
-        const isDone = completed.includes(lvl.id);
-        const canUnlock = lvl.id === 1 || completed.includes(lvl.id - 1);
-        let cls = 'level-card';
+    var grid = document.getElementById('levelGrid');
+    var html = '';
+    var completed = JSON.parse(localStorage.getItem('mama_completed') || '[]');
+    for (var i = 0; i < ALL_LEVELS.length; i++) {
+        var lvl = ALL_LEVELS[i];
+        var isDone = completed.indexOf(lvl.id) >= 0;
+        var canUnlock = lvl.id === 1 || completed.indexOf(lvl.id - 1) >= 0;
+        var cls = 'level-card';
         if (isDone) cls += ' done';
         if (!canUnlock) cls += ' locked';
-        html += `<div class="${cls}" onclick="${canUnlock ? 'startLevel('+lvl.id+')' : ''}">
-          <div class="lvl-num">${lvl.id}</div>
-          <div class="lvl-title">${lvl.title}</div>
-          <div class="lvl-chars">${lvl.chars.map(c=>c.char).join(' ')}</div>
-        </div>`;
+        html += '<div class="'+cls+'" onclick="'+(canUnlock?'startLevel('+lvl.id+')':'')+'"><div class="lvl-num">'+lvl.id+'</div><div class="lvl-title">'+lvl.title+'</div><div class="lvl-chars">'+lvl.chars.map(function(c){return c.char}).join(' ')+'</div></div>';
     }
-    for (let i = ALL_LEVELS.length + 1; i <= 10; i++) {
-        html += `<div class="level-card locked">
-          <div class="lvl-num">${i}</div>
-          <div class="lvl-title">第${i}关</div>
-          <div class="lvl-chars">敬请期待</div>
-        </div>`;
+    for (var j = ALL_LEVELS.length + 1; j <= 10; j++) {
+        html += '<div class="level-card locked"><div class="lvl-num">'+j+'</div><div class="lvl-title">第'+j+'关</div><div class="lvl-chars">敬请期待</div></div>';
     }
     grid.innerHTML = html;
 }
 
-// ===== 进入关卡 =====
 async function startLevel(lvl) {
     stopAudio();
     currentLevel = lvl;
@@ -220,28 +162,25 @@ async function startLevel(lvl) {
     showPage('learnPage');
     updateProgress();
     document.getElementById('btnNext').textContent = '下一个字';
-    // 后台预加载该关所有音频
-    preloadLevelAudio(lvl);
     await playAudio('welcome.mp3');
     await showChar(0);
 }
 
 function updateProgress() {
-    document.getElementById('progressText').textContent =
-        level().title + ' · 第' + (curIdx+1) + '/' + chars().length + '个字';
+    document.getElementById('progressText').textContent = level().title + ' · 第' + (curIdx+1) + '/' + chars().length + '个字';
 }
 
 async function showChar(idx) {
     curIdx = idx;
-    const ch = chars()[idx];
+    var ch = chars()[idx];
     updateProgress();
     document.getElementById('bigChar').textContent = ch.char;
     document.getElementById('pinyin').textContent = ch.pinyin;
     document.getElementById('storyText').textContent = ch.etymology || '';
 
-    let mHTML = '';
-    ch.meanings.forEach(m => {
-        mHTML += `<div class="meaning-row"><span class="m-label">${m.label}</span><span class="m-eg">${m.eg}</span></div>`;
+    var mHTML = '';
+    ch.meanings.forEach(function(m) {
+        mHTML += '<div class="meaning-row"><span class="m-label">'+m.label+'</span><span class="m-eg">'+m.eg+'</span></div>';
     });
     document.getElementById('meaningList').innerHTML = mHTML;
     document.getElementById('wordRow').innerHTML = '词语：<b>' + ch.words.join('、') + '</b>';
@@ -254,7 +193,7 @@ async function showChar(idx) {
     }
 
     await playSeq(['char_' + idx + '_story.mp3']);
-    pendingTimer = setTimeout(async () => {
+    pendingTimer = setTimeout(async function() {
         pendingTimer = null;
         if (curIdx !== idx) return;
         await playSeq(['char_' + idx + '_meaning.mp3', 'char_' + idx + '_words.mp3', 'char_' + idx + '_sentence.mp3']);
@@ -280,16 +219,16 @@ function showDone() {
     showPage('donePage');
     document.getElementById('doneTitle').textContent = level().title.replace('第','').split('·')[0].trim() + '完成！';
     document.getElementById('doneMsg').textContent = '你已经学会了' + chars().length + '个新字';
-    let grid = '';
-    chars().forEach((ch, i) => {
-        grid += '<span onclick="stopAudio();startLevel('+currentLevel+');setTimeout(()=>showChar('+i+'),300)">' + ch.char + '</span>';
+    var grid = '';
+    chars().forEach(function(ch, i) {
+        grid += '<span onclick="stopAudio();startLevel('+currentLevel+');setTimeout(function(){showChar('+i+')},300)">' + ch.char + '</span>';
     });
     document.getElementById('doneGrid').innerHTML = grid;
 
-    const completed = JSON.parse(localStorage.getItem('mama_completed') || '[]');
-    if (!completed.includes(currentLevel)) {
+    var completed = JSON.parse(localStorage.getItem('mama_completed') || '[]');
+    if (completed.indexOf(currentLevel) < 0) {
         completed.push(currentLevel);
-        completed.sort((a,b)=>a-b);
+        completed.sort(function(a,b){return a-b});
         localStorage.setItem('mama_completed', JSON.stringify(completed));
     }
     renderLevelGrid();
@@ -302,7 +241,6 @@ function goHome() {
     showPage('selectPage');
 }
 
-// ===== 初始化 =====
 showPage('selectPage');
 renderLevelGrid();
 </script>
