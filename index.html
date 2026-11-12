@@ -6,45 +6,45 @@
 <title>字源识字</title>
 <style>
 
-*{{margin:0;padding:0;box-sizing:border-box}}
-body{{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#fef9f0;color:#3d3226;min-height:100vh;overflow:hidden}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#fef9f0;color:#3d3226;min-height:100vh;overflow:hidden}
 /* ---- 首页 ---- */
-.home{{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;padding:20px}}
-.home .icon{{font-size:80px;margin-bottom:16px}}
-.home h1{{font-size:28px;color:#5c4033;margin-bottom:8px}}
-.home .sub{{font-size:15px;color:#8b7355;margin-bottom:36px;text-align:center}}
-.home .btn{{display:block;width:240px;padding:16px;margin:8px;border:none;border-radius:14px;font-size:20px;cursor:pointer;text-align:center}}
-.btn-start{{background:#c0392b;color:#fff}}
-.btn-review{{background:#f5e6d3;color:#5c4033;border:2px solid #c0392b}}
-.home .hint{{margin-top:24px;font-size:13px;color:#a89070}}
+.home{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;padding:20px}
+.home .icon{font-size:80px;margin-bottom:16px}
+.home h1{font-size:28px;color:#5c4033;margin-bottom:8px}
+.home .sub{font-size:15px;color:#8b7355;margin-bottom:36px;text-align:center}
+.home .btn{display:block;width:240px;padding:16px;margin:8px;border:none;border-radius:14px;font-size:20px;cursor:pointer;text-align:center}
+.btn-start{background:#c0392b;color:#fff}
+.btn-review{background:#f5e6d3;color:#5c4033;border:2px solid #c0392b}
+.home .hint{margin-top:24px;font-size:13px;color:#a89070}
 /* ---- 学习页 ---- */
-.learn{{display:none;flex-direction:column;align-items:center;height:100vh;padding:20px;overflow-y:auto}}
-.learn .progress{{font-size:13px;color:#8b7355;margin-bottom:10px}}
-.learn .big-char{{font-size:180px;line-height:1;color:#5c4033;margin:10px 0;font-family:'KaiTi','STKaiti','楷体',serif;cursor:pointer}}
-.learn .big-char:active{{color:#c0392b}}
-.learn .pinyin{{font-size:22px;color:#8b7355;margin-bottom:4px}}
-.learn .story-box{{width:100%;max-width:500px;background:#fff;border-radius:14px;padding:16px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:left}}
-.learn .story-box .label{{font-size:12px;color:#c0392b;font-weight:bold;margin-bottom:6px}}
-.learn .story-box .text{{font-size:15px;line-height:1.8;color:#3d3226}}
-.learn .meaning-row{{width:100%;max-width:500px;margin:4px 0;text-align:left}}
-.learn .meaning-row .m-label{{display:inline-block;background:#c0392b;color:#fff;border-radius:6px;padding:3px 10px;font-size:13px;margin-right:8px}}
-.learn .meaning-row .m-eg{{font-size:13px;color:#6b5c4e}}
-.learn .word-row{{width:100%;max-width:500px;margin:8px 0;text-align:left;font-size:16px;color:#5c4033}}
-.learn .sentence-row{{width:100%;max-width:500px;margin:4px 0 20px;text-align:left;font-size:15px;color:#5c4033;background:#fff9f0;padding:10px;border-radius:8px;border-left:3px solid #c0392b}}
-.learn .btns{{display:flex;gap:16px;margin-top:10px;margin-bottom:40px}}
-.learn .btns button{{padding:14px 28px;border-radius:12px;font-size:17px;cursor:pointer;border:none}}
-.learn .btn-again{{background:#f5e6d3;color:#5c4033}}
-.learn .btn-next{{background:#c0392b;color:#fff}}
+.learn{display:none;flex-direction:column;align-items:center;height:100vh;padding:20px;overflow-y:auto}
+.learn .progress{font-size:13px;color:#8b7355;margin-bottom:10px}
+.learn .big-char{font-size:180px;line-height:1;color:#5c4033;margin:10px 0;font-family:'KaiTi','STKaiti','楷体',serif;cursor:pointer}
+.learn .big-char:active{color:#c0392b}
+.learn .pinyin{font-size:22px;color:#8b7355;margin-bottom:4px}
+.learn .story-box{width:100%;max-width:500px;background:#fff;border-radius:14px;padding:16px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:left}
+.learn .story-box .label{font-size:12px;color:#c0392b;font-weight:bold;margin-bottom:6px}
+.learn .story-box .text{font-size:15px;line-height:1.8;color:#3d3226}
+.learn .meaning-row{width:100%;max-width:500px;margin:4px 0;text-align:left}
+.learn .meaning-row .m-label{display:inline-block;background:#c0392b;color:#fff;border-radius:6px;padding:3px 10px;font-size:13px;margin-right:8px}
+.learn .meaning-row .m-eg{font-size:13px;color:#6b5c4e}
+.learn .word-row{width:100%;max-width:500px;margin:8px 0;text-align:left;font-size:16px;color:#5c4033}
+.learn .sentence-row{width:100%;max-width:500px;margin:4px 0 20px;text-align:left;font-size:15px;color:#5c4033;background:#fff9f0;padding:10px;border-radius:8px;border-left:3px solid #c0392b}
+.learn .btns{display:flex;gap:16px;margin-top:10px;margin-bottom:40px}
+.learn .btns button{padding:14px 28px;border-radius:12px;font-size:17px;cursor:pointer;border:none}
+.learn .btn-again{background:#f5e6d3;color:#5c4033}
+.learn .btn-next{background:#c0392b;color:#fff}
 /* ---- 完成页 ---- */
-.done{{display:none;flex-direction:column;align-items:center;justify-content:center;height:100vh;padding:20px;text-align:center}}
-.done .icon{{font-size:80px;margin-bottom:16px}}
-.done h2{{font-size:24px;color:#5c4033;margin-bottom:8px}}
-.done p{{font-size:15px;color:#8b7355;margin-bottom:24px}}
-.done .grid{{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:30px}}
-.done .grid span{{font-size:36px;background:#fff;border-radius:10px;padding:10px;text-align:center;font-family:'KaiTi','STKaiti',serif}}
-.done .btn{{padding:14px 32px;border-radius:12px;font-size:17px;cursor:pointer;border:none;background:#c0392b;color:#fff}}
+.done{display:none;flex-direction:column;align-items:center;justify-content:center;height:100vh;padding:20px;text-align:center}
+.done .icon{font-size:80px;margin-bottom:16px}
+.done h2{font-size:24px;color:#5c4033;margin-bottom:8px}
+.done p{font-size:15px;color:#8b7355;margin-bottom:24px}
+.done .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:30px}
+.done .grid span{font-size:36px;background:#fff;border-radius:10px;padding:10px;text-align:center;font-family:'KaiTi','STKaiti',serif}
+.done .btn{padding:14px 32px;border-radius:12px;font-size:17px;cursor:pointer;border:none;background:#c0392b;color:#fff}
 /* ---- 听音频中提示 ---- */
-.playing-indicator{{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);color:#fff;padding:12px 24px;border-radius:20px;font-size:15px;display:none;z-index:100;pointer-events:none}}
+.playing-indicator{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);color:#fff;padding:12px 24px;border-radius:20px;font-size:15px;display:none;z-index:100;pointer-events:none}
 
 
 /* ---- 关卡选择页 ---- */
@@ -237,7 +237,7 @@ async function showChar(idx) {
     updateProgress();
     document.getElementById('bigChar').textContent = ch.char;
     document.getElementById('pinyin').textContent = ch.pinyin;
-    document.getElementById('storyText').textContent = '';
+    document.getElementById('storyText').textContent = ch.etymology || '';
 
     let mHTML = '';
     ch.meanings.forEach(m => {
