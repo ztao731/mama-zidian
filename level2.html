@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>第2关 · 象形字——动物</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#fdf5e6;color:#5c4033;min-height:100vh}
+.container{max-width:480px;margin:0 auto;padding:16px 20px 24px}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.header a{text-decoration:none;color:#8b7355;font-size:22px;padding:4px}
+.title{font-size:18px;font-weight:bold;color:#c0392b}
+.progress{font-size:14px;color:#8b7355}
+.big-char-area{text-align:center;margin:16px 0 8px}
+.big-char{font-size:96px;font-family:'KaiTi','STKaiti',serif;line-height:1.2;cursor:pointer;display:inline-block;transition:transform .15s}
+.big-char:active{transform:scale(1.08)}
+.pinyin{font-size:20px;color:#8b7355;text-align:center;margin-bottom:16px}
+.box{background:#fff;border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.box .label{font-weight:bold;color:#c0392b;font-size:14px;margin-bottom:8px}
+.box .text{font-size:15px;line-height:1.7}
+.meaning-row{display:flex;align-items:baseline;margin-bottom:6px}
+.meaning-row .ml{color:#c0392b;font-weight:bold;min-width:4em;font-size:15px}
+.meaning-row .me{font-size:14px;color:#444}
+.word-row{font-size:15px;margin-top:4px}
+.word-row b{color:#c0392b}
+.sentence-row{font-size:15px;color:#444}
+.btns{display:flex;gap:12px;margin-top:16px}
+.btn{padding:14px 0;border-radius:12px;font-size:16px;border:none;cursor:pointer;flex:1;text-align:center;font-weight:bold;transition:opacity .2s}
+.btn:active{opacity:.7}
+.btn-next{background:#c0392b;color:#fff}
+.btn-again{background:#f0e6d3;color:#c0392b;border:2px solid #c0392b}
+.done-page{display:none;text-align:center;padding:40px 20px}
+.done-page .icon{font-size:64px}
+.done-page h2{font-size:22px;margin:16px 0 8px}
+.done-page .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.done-page .grid span{font-size:40px;background:#fff;border-radius:10px;padding:8px;font-family:'KaiTi','STKaiti',serif}
+.done-page a{display:inline-block;padding:14px 32px;background:#c0392b;color:#fff;border-radius:12px;text-decoration:none;font-size:17px}
+.playing{display:none;text-align:center;font-size:13px;color:#c0392b;margin-top:8px;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.3}}
+</style>
+</head>
+<body>
+
+<div class="container" id="learnPage">
+  <div class="header">
+    <a href="index.html">←</a>
+    <span class="title">第2关 · 象形字——动物</span>
+    <span class="progress" id="progress">第1/5个字</span>
+  </div>
+  
+  <div class="big-char-area">
+    <div class="big-char" id="bigChar" onclick="replayAll()"></div>
+  </div>
+  <div class="pinyin" id="pinyin"></div>
+  
+  <div class="box">
+    <div class="label">✏ 字源故事</div>
+    <div class="text" id="storyText"></div>
+  </div>
+  
+  <div class="box" id="meaningList"></div>
+  
+  <div class="box">
+    <div class="word-row" id="wordRow"></div>
+  </div>
+  <div class="box">
+    <div class="sentence-row" id="sentenceRow"></div>
+  </div>
+  
+  <div class="btns">
+    <button class="btn btn-again" onclick="replayAll()">🔊 再听一遍</button>
+    <button class="btn btn-next" id="btnNext" onclick="nextChar()">下一个字 →</button>
+  </div>
+  <div class="playing" id="playing">正在讲解中...</div>
+</div>
+
+<div class="done-page" id="donePage">
+  <div class="icon">🎉</div>
+  <h2>第2关完成！</h2>
+  <p style="color:#8b7355">你已经学会了 5 个动物字</p>
+  <div class="grid" id="doneGrid"></div>
+  <a href="index.html">返回首页</a>
+</div>
+
+<script>
+var CHARS = [
+  {"c":"马","p":"mǎ","s":"古人画马，画出长长的脸、奔跑的四条腿，还有飘起来的鬃毛和尾巴。你看这个字，上面像马头，下面四点像马蹄在跑。几千年前的人骑马打猎，所以把马画了下来。","m":[{"l":"马（动物）","e":"草原上有很多马。"},{"l":"大","e":"马路——就是大路、宽路。"},{"l":"立刻","e":"马上——就是立刻、很快的意思。"}],"w":["马上","马路","骑马","马车"],"sen":"爸爸骑着马在草原上跑。"},
+  {"c":"牛","p":"niú","s":"古人画牛，重点画它的头——两个弯弯的大角，还有宽宽的鼻子。你看这个字，上面一撇一横像两只角，下面一横像牛头。牛是古人最重要的帮手，用来耕田、拉车。","m":[{"l":"牛（动物）","e":"田里有一头牛在耕地。"},{"l":"厉害","e":"你真牛——就是你真厉害、真棒。"},{"l":"固执","e":"牛脾气——就是很固执、不听话。"}],"w":["牛奶","牛肉","水牛","牛气"],"sen":"这头牛在田里帮爷爷耕地。"},
+  {"c":"羊","p":"yáng","s":"古人画羊，画它的头——两个弯弯的角，尖尖的脸。羊是温顺的动物，古人养羊吃肉、喝奶、穿毛衣。你看这个字，上面两点像羊角，下面一横像羊的脸。","m":[{"l":"羊（动物）","e":"山坡上有一群羊在吃草。"},{"l":"祥、好","e":"羊有吉祥的意思，所以过年说“三羊开泰”。"}],"w":["山羊","羊毛","羊肉","羊奶"],"sen":"山坡上有一群羊在吃草。"},
+  {"c":"鱼","p":"yú","s":"古人画鱼——有头、有身体、有尾巴，身上还有鳞片。你看这个字，上面像鱼头，中间是身体，下面一横像尾巴。鱼在水里游，是古人最早的食物之一。","m":[{"l":"鱼（动物）","e":"河里的鱼很多。"},{"l":"多余","e":"鱼和“余”同音，过年吃鱼代表年年有盈余。"}],"w":["小鱼","金鱼","钓鱼","鱼肉"],"sen":"河里有很多鱼在游来游去。"},
+  {"c":"鸟","p":"niǎo","s":"古人画鸟——有头、有眼睛、有翅膀、有爪子。你看这个字，上面一撇像鸟头上的羽毛，中间像鸟的身体和翅膀，下面一横像鸟的爪子。鸟会飞，所以古人画的鸟是站着的侧影。","m":[{"l":"鸟（动物）","e":"树上有几只小鸟。"},{"l":"鸟类统称","e":"麻雀、燕子、老鹰都是鸟。"}],"w":["小鸟","飞鸟","鸟巢","鸟笼"],"sen":"树上有几只小鸟在唱歌。"}
+];
+
+var idx = 0, audio = null;
+
+function showChar(i) {
+  idx = i;
+  var ch = CHARS[i];
+  document.getElementById('bigChar').textContent = ch.c;
+  document.getElementById('pinyin').textContent = ch.p;
+  document.getElementById('storyText').textContent = ch.s;
+  document.getElementById('progress').textContent = '第' + (i+1) + '/' + CHARS.length + '个字';
+  
+  var mh = '';
+  ch.m.forEach(function(m) {
+    mh += '<div class="meaning-row"><span class="ml">' + m.l + '</span><span class="me">' + m.e + '</span></div>';
+  });
+  document.getElementById('meaningList').innerHTML = '<div class="label">📖 多义字</div>' + mh;
+  document.getElementById('wordRow').innerHTML = '词语：<b>' + ch.w.join('、') + '</b>';
+  document.getElementById('sentenceRow').textContent = '例句：' + ch.sen;
+  
+  document.getElementById('btnNext').textContent = (i === CHARS.length - 1) ? '✅ 完成学习' : '下一个字 →';
+  
+  playSeq(['char_' + i + '_story', 'char_' + i + '_meaning', 'char_' + i + '_words', 'char_' + i + '_sentence']);
+}
+
+function playAudio(name) {
+  return new Promise(function(resolve) {
+    stopAudio();
+    var a = new Audio('audio/lv2/' + name + '.mp3');
+    audio = a;
+    document.getElementById('playing').style.display = 'block';
+    a.onended = function() { audio = null; document.getElementById('playing').style.display = 'none'; resolve(); };
+    a.onerror = function() { audio = null; document.getElementById('playing').style.display = 'none'; resolve(); };
+    a.play().catch(function() { audio = null; document.getElementById('playing').style.display = 'none'; resolve(); });
+  });
+}
+
+function stopAudio() {
+  if (audio) { audio.pause(); audio = null; }
+  document.getElementById('playing').style.display = 'none';
+}
+
+async function playSeq(names) {
+  for (var i = 0; i < names.length; i++) {
+    await playAudio(names[i]);
+  }
+}
+
+function replayAll() {
+  stopAudio();
+  playSeq(['char_' + idx + '_story', 'char_' + idx + '_meaning', 'char_' + idx + '_words', 'char_' + idx + '_sentence']);
+}
+
+function nextChar() {
+  stopAudio();
+  if (idx < CHARS.length - 1) {
+    showChar(idx + 1);
+    window.scrollTo(0, 0);
+  } else {
+    showDone();
+  }
+}
+
+function showDone() {
+  document.getElementById('learnPage').style.display = 'none';
+  document.getElementById('donePage').style.display = 'block';
+  var g = '';
+  CHARS.forEach(function(ch, i) {
+    g += '<span onclick="goChar(' + i + ')">' + ch.c + '</span>';
+  });
+  document.getElementById('doneGrid').innerHTML = g;
+}
+
+function goChar(i) {
+  document.getElementById('donePage').style.display = 'none';
+  document.getElementById('learnPage').style.display = 'block';
+  showChar(i);
+}
+
+showChar(0);
+</script>
+</body>
+</html>
