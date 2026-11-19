@@ -2,80 +2,127 @@
 <html lang="zh">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>字源识字</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:linear-gradient(135deg,#fdf5e6,#fce4d6);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 20px}
-h1{font-size:32px;color:#c0392b;margin-bottom:4px;font-family:'KaiTi','STKaiti',serif}
-.sub{color:#8b7355;font-size:15px;margin-bottom:32px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;max-width:380px;width:100%}
-.card{background:#fff;border-radius:14px;padding:20px 16px;text-align:center;text-decoration:none;color:#5c4033;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:transform .15s,box-shadow .15s}
-.card:active{transform:scale(.97);box-shadow:0 1px 3px rgba(0,0,0,.1)}
-.card .num{font-size:28px;font-weight:bold;color:#c0392b;margin-bottom:4px}
-.card .title{font-size:15px;font-weight:bold;margin-bottom:6px}
-.card .chars{font-size:13px;color:#8b7355}
-.card.locked{opacity:.45;pointer-events:none}
-.card.locked .num{color:#999}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#fef9f0;color:#3d3226;min-height:100vh}
+.hero{text-align:center;padding:50px 20px 30px}
+.hero .icon{font-size:80px;margin-bottom:16px}
+.hero h1{font-size:32px;color:#5c4033;margin-bottom:8px}
+.hero .sub{font-size:15px;color:#8b7355;margin-bottom:6px}
+.hero .total{font-size:13px;color:#c0392b;margin-top:12px}
+.levels{max-width:600px;margin:0 auto;padding:0 20px 60px}
+.level-card{display:flex;align-items:center;background:#fff;border-radius:14px;padding:16px 20px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);cursor:pointer;text-decoration:none;color:#3d3226;transition:transform .15s,box-shadow .15s}
+.level-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.level-card .num{width:48px;height:48px;border-radius:12px;background:#c0392b;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:bold;flex-shrink:0;margin-right:16px}
+.level-card .info{flex:1;min-width:0}
+.level-card .info .title{font-size:17px;font-weight:bold;color:#5c4033;margin-bottom:3px}
+.level-card .info .desc{font-size:13px;color:#8b7355}
+.level-card .info .chars{font-size:14px;color:#3d3226;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.level-card .arrow{font-size:20px;color:#c0392b;margin-left:8px;flex-shrink:0}
+.footer{text-align:center;padding:30px 20px;color:#8b7355;font-size:13px}
 </style>
 </head>
 <body>
-
-<h1>字源识字</h1>
-<p class="sub">50个基础汉字 · 10关循序渐进</p>
-
-<div class="grid">
-  <a class="card" href="level1.html">
-    <div class="num">①</div>
-    <div class="title">象形字入门</div>
-    <div class="chars">日 月 山 水 火 人 目 口 手</div>
-  </a>
-  <a class="card" href="level2.html">
-    <div class="num">②</div>
-    <div class="title">象形字——动物</div>
-    <div class="chars">马 牛 羊 鱼 鸟</div>
-  </a>
-  <div class="card locked">
-    <div class="num">③</div>
-    <div class="title">第3关</div>
-    <div class="chars">敬请期待</div>
-  </div>
-  <div class="card locked">
-    <div class="num">④</div>
-    <div class="title">第4关</div>
-    <div class="chars">敬请期待</div>
-  </div>
-  <div class="card locked">
-    <div class="num">⑤</div>
-    <div class="title">第5关</div>
-    <div class="chars">敬请期待</div>
-  </div>
-  <div class="card locked">
-    <div class="num">⑥</div>
-    <div class="title">第6关</div>
-    <div class="chars">敬请期待</div>
-  </div>
-  <div class="card locked">
-    <div class="num">⑦</div>
-    <div class="title">第7关</div>
-    <div class="chars">敬请期待</div>
-  </div>
-  <div class="card locked">
-    <div class="num">⑧</div>
-    <div class="title">第8关</div>
-    <div class="chars">敬请期待</div>
-  </div>
-  <div class="card locked">
-    <div class="num">⑨</div>
-    <div class="title">第9关</div>
-    <div class="chars">敬请期待</div>
-  </div>
-  <div class="card locked">
-    <div class="num">⑩</div>
-    <div class="title">第10关</div>
-    <div class="chars">敬请期待</div>
-  </div>
+<div class="hero">
+  <div class="icon">字</div>
+  <h1>字源识字</h1>
+  <div class="sub">学汉字，懂故事 · 不靠死记硬背</div>
+  <div class="total">共 10 关 · 76 个汉字</div>
 </div>
-
+<div class="levels">
+  <a class="level-card" href="level1.html">
+    <div class="num">1</div>
+    <div class="info">
+      <div class="title">象形字入门</div>
+      <div class="desc">古人用画画的方式创造汉字</div>
+      <div class="chars">日 月 山 水 火 人 目 口 手</div>
+    </div>
+    <div class="arrow">→</div>
+  </a>
+  <a class="level-card" href="level2.html">
+    <div class="num">2</div>
+    <div class="info">
+      <div class="title">象形字进阶</div>
+      <div class="desc">古人画动物、植物、器物</div>
+      <div class="chars">木 牛 羊 马 鱼 鸟 虫 门</div>
+    </div>
+    <div class="arrow">→</div>
+  </a>
+  <a class="level-card" href="level3.html">
+    <div class="num">3</div>
+    <div class="info">
+      <div class="title">象形字进阶</div>
+      <div class="desc">天上的、地下的、人造的</div>
+      <div class="chars">雨 云 电 田 石 竹 车 舟</div>
+    </div>
+    <div class="arrow">→</div>
+  </a>
+  <a class="level-card" href="level4.html">
+    <div class="num">4</div>
+    <div class="info">
+      <div class="title">会意字</div>
+      <div class="desc">两个字拼在一起，变成新意思</div>
+      <div class="chars">休 看 明 林 从 众 尖 尘</div>
+    </div>
+    <div class="arrow">→</div>
+  </a>
+  <a class="level-card" href="level5.html">
+    <div class="num">5</div>
+    <div class="info">
+      <div class="title">会意字</div>
+      <div class="desc">字里藏着古人的生活</div>
+      <div class="chars">男 妇 家 安 字 名 好 心</div>
+    </div>
+    <div class="arrow">→</div>
+  </a>
+  <a class="level-card" href="level6.html">
+    <div class="num">6</div>
+    <div class="info">
+      <div class="title">会意字</div>
+      <div class="desc">方向、品德、美好事物</div>
+      <div class="chars">北 信 坐 友 美 长 短 小</div>
+    </div>
+    <div class="arrow">→</div>
+  </a>
+  <a class="level-card" href="level7.html">
+    <div class="num">7</div>
+    <div class="info">
+      <div class="title">指事字</div>
+      <div class="desc">不是画出来，而是指出来</div>
+      <div class="chars">一 上 下 本 末 刀 刃 中</div>
+    </div>
+    <div class="arrow">→</div>
+  </a>
+  <a class="level-card" href="level8.html">
+    <div class="num">8</div>
+    <div class="info">
+      <div class="title">形声字入门</div>
+      <div class="desc">一半表意思，一半表读音</div>
+      <div class="chars">爸 妈 姐 妹 草 花 饭</div>
+    </div>
+    <div class="arrow">→</div>
+  </a>
+  <a class="level-card" href="level9.html">
+    <div class="num">9</div>
+    <div class="info">
+      <div class="title">字族拓展 · 单人旁 亻</div>
+      <div class="desc">单人旁的字都跟人有关系</div>
+      <div class="chars">你 他 们 做 何 体</div>
+    </div>
+    <div class="arrow">→</div>
+  </a>
+  <a class="level-card" href="level10.html">
+    <div class="num">10</div>
+    <div class="info">
+      <div class="title">字族拓展 · 三点水 氵</div>
+      <div class="desc">三点水的字都跟水有关系</div>
+      <div class="chars">河 海 洋 洗 江 湖</div>
+    </div>
+    <div class="arrow">→</div>
+  </a>
+</div>
+<div class="footer">为妈妈做的识字工具 ❤️</div>
 </body>
 </html>
