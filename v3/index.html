@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>字源识字 — 21~30关</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:linear-gradient(135deg,#fef9f0 0%,#fdf2e9 100%);color:#3d3226;min-height:100vh;padding:30px 20px}
+.wrap{max-width:600px;margin:0 auto}
+.header{text-align:center;margin-bottom:30px}
+.header .icon{font-size:64px;margin-bottom:8px}
+.header h1{font-size:26px;color:#5c4033;margin-bottom:4px}
+.header .sub{font-size:14px;color:#8b7355}
+.tabs{display:flex;justify-content:center;gap:8px;margin-bottom:24px}
+.tab{padding:8px 18px;border-radius:20px;font-size:14px;cursor:pointer;border:1.5px solid #c0392b;background:transparent;color:#c0392b}
+.tab.active{background:#c0392b;color:#fff}
+.level-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.level-card{background:#fff;border-radius:14px;padding:18px 16px;text-decoration:none;color:#3d3226;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .15s,box-shadow .15s;display:flex;flex-direction:column;align-items:center;text-align:center}
+.level-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.level-card .num{font-size:12px;color:#8b7355;margin-bottom:4px}
+.level-card .title{font-size:14px;color:#5c4033;font-weight:bold;margin-bottom:3px}
+.level-card .sub{font-size:11px;color:#8b7355;margin-bottom:6px}
+.level-card .chars{font-size:18px;color:#c0392b;font-family:'KaiTi','STKaiti',serif;line-height:1.6}
+.level-card.done{background:#f0faf0}
+.level-card.done .num{color:#27ae60}
+.footer{text-align:center;margin-top:30px;font-size:13px;color:#8b7355}
+.footer a{color:#c0392b;text-decoration:none}
+.section-title{text-align:center;font-size:16px;color:#5c4033;margin-bottom:16px;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="icon">字</div>
+    <h1>字源识字</h1>
+    <div class="sub">学汉字，懂故事 · 第21~30关</div>
+  </div>
+  
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('all')">全部</button>
+    <button class="tab" onclick="switchTab('unlearned')">未学完</button>
+    <button class="tab" onclick="switchTab('done')">已学完</button>
+  </div>
+
+  <div class="section-title" id="sectionTitle">全部关卡</div>
+  
+  <div class="level-grid" id="levelGrid"></div>
+
+  <div class="footer">
+    <a href="https://ztao731.github.io/mama-zidian/">第1~10关</a> · 
+    <a href="https://ztao731.github.io/mama-zidian/v2/">第11~20关</a>
+    <br><br>
+    字源识字 · 妈妈专属
+  </div>
+</div>
+<script>
+const levels = [
+  {id:21, chars:'花草菜蓝<br>落菊荷茶', title:'草字头',sub:'艹'},
+  {id:22, chars:'家安守完<br>宝定客宁', title:'宝盖头',sub:'宀'},
+  {id:23, chars:'眼睛看相<br>睡盲盼盯', title:'目字旁',sub:'目'},
+  {id:24, chars:'脸脚腿肚<br>胖肥朋脑', title:'月字旁',sub:'月'},
+  {id:25, chars:'玩球环班<br>珠现珍理', title:'王字旁',sub:'王'},
+  {id:26, chars:'轮转辆软<br>轻输轴较', title:'车字旁',sub:'车'},
+  {id:27, chars:'钱财货贵<br>买卖赔赚', title:'贝字旁',sub:'贝'},
+  {id:28, chars:'跑跳路跟<br>踢踩距踪', title:'足字旁',sub:'足'},
+  {id:29, chars:'鸡鸭鹅鸽<br>蜂蝶鲜鲤', title:'动物字族',sub:'虫/鱼/鸟'},
+  {id:30, chars:'艹宀目月王<br>车贝足鱼虫', title:'综合复习',sub:'汇总'},
+];
+
+let currentTab = 'all';
+
+function isDone(id) {
+  const learned = JSON.parse(localStorage.getItem('zidian_lv'+id+'_learned')||'[]');
+  if (learned.length === 0) return false;
+  const total = (id===30)?10:8;
+  return learned.length >= total;
+}
+
+function renderGrid() {
+  const grid = document.getElementById('levelGrid');
+  let html = '';
+  levels.forEach(lv => {
+    const done = isDone(lv.id);
+    if (currentTab==='done' && !done) return;
+    if (currentTab==='unlearned' && done) return;
+    html += '<a class="level-card'+(done?' done':'')+'" href="level'+lv.id+'.html">';
+    html += '<div class="num">'+(done?'✅ ':'')+'第'+lv.id+'关</div>';
+    html += '<div class="title">'+lv.title+' · '+lv.sub+'</div>';
+    html += '<div class="chars">'+lv.chars+'</div>';
+    html += '</a>';
+  });
+  grid.innerHTML = html || '<div style="grid-column:1/-1;text-align:center;color:#8b7355;padding:20px">暂无内容</div>';
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.textContent.includes(tab==='all'?'全部':tab==='unlearned'?'未学完':'已学完')));
+  document.getElementById('sectionTitle').textContent = tab==='all'?'全部关卡':tab==='unlearned'?'还未学完的关卡':'已经学完的关卡';
+  renderGrid();
+}
+
+renderGrid();
+</script>
+</body>
+</html>
