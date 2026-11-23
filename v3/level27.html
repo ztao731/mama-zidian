@@ -101,16 +101,19 @@ body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#fef9f0;c
       bp=document.getElementById('barPct'),
       fb=document.getElementById('fallbackText');
   setTimeout(function(){
-    if(bf.offsetWidth===0){bf.style.width='10%';bp.textContent='10%';fb.style.display='block';}
+    if(!bf||!lo)return;
+    if(bf.offsetWidth===0){bf.classList.remove('anim');bf.style.width='10%';bp.textContent='10%';fb.style.display='block';}
   },2500);
   window.addEventListener('load',function(){
-    bf.style.transition='width .3s ease-out';
+    if(!bf||!lo)return;
+    bf.classList.remove('anim');
+    bf.style.transition='width .4s ease-out';
     bf.style.width='100%';
     bp.textContent='100%';
     setTimeout(function(){
       lo.classList.add('done');
       document.getElementById('mainContent').style.display='block';
-    },400);
+    },450);
   });
 })();
 
